@@ -11,13 +11,14 @@ public class DataCountries {
 
     public DataCountries(String countryCode, String countryName, String continentName, String capital) {
         this.countryCode = countryCode;
-        this.continentName = countryName;
+        this.countryName = countryName;
         this.continentName = continentName;
         this.capital = capital;
     }
 
     public DataCountries() {
     }
+
 
     public String getCountryCode() {
         return countryCode;
@@ -66,4 +67,5 @@ public class DataCountries {
     public void setPopulation(Integer population) {
         this.population = population;
     }
+
 }

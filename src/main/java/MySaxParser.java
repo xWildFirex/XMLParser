@@ -10,15 +10,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySaxParser extends DefaultHandler {
-    List<DataCountries> dataCountriesesList = new ArrayList<DataCountries>();
+    public static final String COUNTRY = "country";
+    public static final String COUNTRY_CODE = "countryCode";
+    public static final String COUNTRY_NAME = "countryName";
+    public static final String CONTINENT_NAME = "continentName";
+    public static final String CAPITAL = "capital";
+    List<DataCountries> dataCountriesList = new ArrayList<DataCountries>();
     String xmlFileName;
-    String tmpValue;
     String thisElement = "";
     DataCountries dataCountries = null;
 
     public MySaxParser(String xmlFileName) {
         this.xmlFileName = xmlFileName;
         parseDocument();
+    }
+
+    public String toString(){
+        StringBuffer stringBuffer = new StringBuffer();
+        for (DataCountries item : dataCountriesList){
+            toString(stringBuffer, item).append('\n');
+        }
+        return stringBuffer.toString();
+    }
+
+    private StringBuffer toString(StringBuffer stringBuffer, DataCountries dataCountries) {
+        stringBuffer.append(dataCountries.getCountryCode()).append('\n');
+        stringBuffer.append(dataCountries.getCountryName()).append('\n');
+        stringBuffer.append(dataCountries.getContinentName()).append('\n');
+        stringBuffer.append(dataCountries.getCapital()).append('\n');
+        stringBuffer.append("----------------");
+        return stringBuffer;
     }
 
     private void parseDocument() {
@@ -48,30 +69,25 @@ public class MySaxParser extends DefaultHandler {
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         thisElement = "";
         if (qName.equals("country")){
-            System.out.println("----------------------");
-            dataCountriesesList.add(dataCountries);
+            dataCountriesList.add(dataCountries);
         }
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if (thisElement.equals("country")) {
+        if (thisElement.equals(COUNTRY)) {
             dataCountries = new DataCountries();
         }
-        if (thisElement.equals("countryCode")) {
+        if (thisElement.equals(COUNTRY_CODE)) {
             dataCountries.setCountryCode(new String(ch, start, length));
-            System.out.println(dataCountries.getCountryCode());
         }
-        if (thisElement.equals("countryName")) {
+        if (thisElement.equals(COUNTRY_NAME)) {
             dataCountries.setCountryName(new String(ch, start, length));
-            System.out.println(dataCountries.getCountryName());
         }
-        if (thisElement.equals("continentName")) {
+        if (thisElement.equals(CONTINENT_NAME)) {
             dataCountries.setContinentName(new String(ch, start, length));
-            System.out.println(dataCountries.getContinentName());
         }
-        if (thisElement.equals("capital")) {
+        if (thisElement.equals(CAPITAL)) {
             dataCountries.setCapital(new String(ch, start, length));
-            System.out.println(dataCountries.getCapital());
         }
     }
 
